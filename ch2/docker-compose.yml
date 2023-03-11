@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.3
+    container_name: iam-ch2-keycloak
+    command: 
+      - start-dev    
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    ports:
+      - "8080:8080"    
+  frontend:
+    build: ./frontend
+    image: iam-ch2-frontend
+    container_name: iam-ch2-frontend
+    ports:
+      - "8000:8000"
+    environment:
+      SERVICE_URL: http://localhost:3000/secured
+      KC_URL: http://keycloak:8080
+  backend:
+    build: ./backend
+    image: iam-ch2-backend
+    container_name: iam-ch2-backend
+    ports:
+      - "3000:3000"
+    environment:
+      KC_URL: http://keycloak:8080
