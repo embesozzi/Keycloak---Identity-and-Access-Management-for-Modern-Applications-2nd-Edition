@@ -75,6 +75,8 @@ function loadTokens() {
             var response = JSON.parse(req.responseText);
             setOutput('output-response', req.responseText);
 
+
+            
             if (response['id_token']) {
                 var idToken = response['id_token'].split('.');
                 var idTokenHeader = JSON.parse(base64UrlDecode(idToken[0]));
@@ -83,12 +85,19 @@ function loadTokens() {
                 setOutput('output-idtokenHeader', idTokenHeader);
                 setOutput('output-idtoken', idTokenBody);
                 setOutput('output-idtokenSignature', idTokenSignature);
-                setState('refreshToken', response['refresh_token']);
                 setState('idToken', response['id_token']);
-                setState('accessToken', response['access_token']);
             } else {
                 setOutput('output-idtoken', '');
             }
+
+            if (response['access_token']) {
+                setState('accessToken', response['access_token']);
+            }
+
+            if (response['refresh_token']) {
+                setState('refreshToken', response['refresh_token']);
+            }
+
         }
     }
     req.open('POST', state.discovery['token_endpoint'], true);
