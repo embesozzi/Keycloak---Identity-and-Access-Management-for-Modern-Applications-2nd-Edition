@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    container_name: iam-ch13-keycloak
+    command: 
+      - start-dev  
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+      KC_LOG_LEVEL: DEBUG
+    volumes: 
+        - $PWD/themes/mytheme/src/main/resources/theme/:/opt/keycloak/themes/
+#        - $PWD/simple-risk-based-authenticator/target/simple-risk-based-authenticator.jar:/opt/keycloak/providers/simple-risk-based-authenticator.jar    
+    ports:
+      - "8080:8080"
